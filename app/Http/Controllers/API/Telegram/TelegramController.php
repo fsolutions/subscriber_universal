@@ -39,7 +39,7 @@ class TelegramController extends Controller
         //         "entities":
         //         [{"offset":0,"length":6,"type":"bot_command"}]}
         // } 
-        $action = $result->message->text;
+        $action = isset($result->message->text) ? $result->message->text : '';
         $chatId = $result->message->chat->id;
         // $userFirstName = $result->message->from->first_name;
         // $userName = $result->message->from->username ? $result->message->from->username : '';
@@ -59,7 +59,13 @@ class TelegramController extends Controller
                 'text' => $text,
                 'reply_markup' => $this->keyboardBtn($options)
             ]);
-        } else {
+        } else if (isset($result->message->forward_from_chat)) {
+            $this->apiRequest('forwardMessage', [
+                'chat_id' => 466136843, // NOW IT CHAT OF FOMICHEVMS AND BOT
+                'from_chat_id' => $result->message->from->id,
+                'message_id' => $result->message->message_id,
+                'disable_notification' => false
+            ]);
         }
     }
 }
