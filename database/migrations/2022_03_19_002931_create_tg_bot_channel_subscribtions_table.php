@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTelegramSubscribtionsTable extends Migration
+class CreateTgBotChannelSubscribtionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateTelegramSubscribtionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tg_subscribtions', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->foreignId('tg_user_id')->constrained('tg_users');
-            $table->unsignedInteger('tg_channel_id')->nullable();
+        Schema::create('tg_bot_channel_subscribtions', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedInteger('tg_channel_id');
+            $table->string('tg_channel_name')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateTelegramSubscribtionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tg_subscribtions');
+        Schema::dropIfExists('tg_bot_channel_subscribtions');
     }
 }

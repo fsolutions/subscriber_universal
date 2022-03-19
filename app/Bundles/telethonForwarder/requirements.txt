@@ -2,4 +2,4 @@ python-dotenv==0.19.2
 pyaes==1.6.1
 pyasn1==0.4.8
 rsa==4.7.2
-Telethon==1.23.0
+Telethon==1.24.0

@@ -55,6 +55,6 @@ class TGUser extends Model
      */
     public function subscriptions()
     {
-        return $this->hasOne(TGSubscription::class, 'tg_user_id', 'tg_user_id');
+        return $this->hasOne(TGUserSubscription::class, 'tg_user_id', 'tg_user_id');
     }
 }

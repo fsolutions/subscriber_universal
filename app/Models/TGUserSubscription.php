@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class TGSubscription extends Model
+class TGUserSubscription extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class TGSubscription extends Model
      *
      * @var string
      */
-    protected $table = 'tg_subscribtions';
+    protected $table = 'tg_user_subscribtions';
 
     /**
      * The attributes that are mass assignable.
@@ -23,7 +23,7 @@ class TGSubscription extends Model
      */
     protected $fillable = [
         'tg_user_id',
-        'tg_channel_id'
+        'tg_bot_channel_subscription_id'
     ];
 
     /**
