@@ -1,4 +1,6 @@
 # Subscriber Universal Bot & User Dashboard
+## Subscriber workflow scheme
+![SubscriberUniversal](https://user-images.githubusercontent.com/3332161/159100708-6f0c2b01-0661-4b07-8a48-909c26e542e3.png)
 
 ## Installation
 
