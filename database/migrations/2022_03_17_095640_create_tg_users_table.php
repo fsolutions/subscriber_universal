@@ -15,10 +15,9 @@ class CreateTgUsersTable extends Migration
     {
         Schema::create('tg_users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('tg_user_id')->unique();
-            $table->foreignId('user_id')->constrained('users');
+            $table->unsignedBigInteger('tg_user_id')->unique();
+            $table->unsignedInteger('user_id')->nullable();
             $table->string('tg_username')->nullable();
-            $table->string('tg_user_first_name')->nullable();
             $table->timestamps();
         });
     }

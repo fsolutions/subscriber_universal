@@ -4,7 +4,7 @@ namespace App\Traits\Telegram;
 
 trait MakeComponents
 {
-  private function keyboardBtn($options)
+  static function keyboardBtn($options)
   {
     $keyboard = [
       'keyboard' => $options,

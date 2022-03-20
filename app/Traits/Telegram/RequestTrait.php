@@ -4,7 +4,7 @@ namespace App\Traits\Telegram;
 
 trait RequestTrait
 {
-  private function apiRequest($method, $parameters = [])
+  static function apiRequest($method, $parameters = [])
   {
     $url = "https://api.telegram.org/bot" . env('TELEGRAM_TOKEN') . '/' . $method;
 

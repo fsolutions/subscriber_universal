@@ -24,8 +24,7 @@ class TGUser extends Model
     protected $fillable = [
         'tg_user_id',
         'user_id',
-        'tg_username',
-        'tg_user_first_name'
+        'tg_username'
     ];
 
     /**
