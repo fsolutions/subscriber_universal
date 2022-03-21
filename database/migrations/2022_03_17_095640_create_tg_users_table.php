@@ -14,11 +14,12 @@ class CreateTgUsersTable extends Migration
     public function up()
     {
         Schema::create('tg_users', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('tg_user_id')->unique();
-            $table->unsignedInteger('user_id')->nullable();
-            $table->string('tg_username')->nullable();
+            $table->unsignedBigInteger('tg_user_id')->unique()->comment('ID в telegram');
+            $table->unsignedInteger('user_id')->nullable()->comment('ID в таблице пользователей, если есть регистрация');
+            $table->string('tg_username')->nullable()->comment('Username в telegram');
+            $table->softDeletes('deleted_at', 0);
             $table->timestamps();
+            $table->primary(['tg_user_id']);
         });
     }
 

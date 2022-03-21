@@ -14,10 +14,10 @@ class CreateTgBotChannelSubscribtionsTable extends Migration
     public function up()
     {
         Schema::create('tg_bot_channel_subscribtions', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedInteger('tg_channel_id');
-            $table->string('tg_channel_name')->nullable();
+            $table->bigInteger('tg_channel_id')->unique()->comment('ID телеграм канала');
+            $table->string('tg_channel_name')->nullable()->comment('Username телеграм канала');
             $table->timestamps();
+            $table->primary(['tg_channel_id']);
         });
     }
 

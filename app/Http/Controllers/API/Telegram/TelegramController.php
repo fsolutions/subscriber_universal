@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Traits\Telegram\RequestTrait;
 use App\Bundles\Telegram\Actions\EmptyAction as TelegramEmptyAction;
 use App\Bundles\Telegram\Actions\StartAction as TelegramStartAction;
+use App\Bundles\Telegram\Actions\AddChannelAction as TelegramAddChannelAction;
 use App\Bundles\Telegram\Actions\ForwardMessageAction as TelegramForwardMessageAction;
 
 class TelegramController extends Controller
@@ -44,13 +45,35 @@ class TelegramController extends Controller
         $chatId = isset($requestData->message->chat->id) ? $requestData->message->chat->id : -1;
         $userId = isset($requestData->message->from->id) ? $requestData->message->from->id : $chatId;
         $userName = isset($requestData->message->from->username) ? $requestData->message->from->username : '';
+        $channelName = $this->channelNameExecution($action);
 
         if ($action == '/start') {
             TelegramStartAction::make($chatId, $userId, $userName);
+        } else if ($action == 'Добавить канал') {
+            TelegramAddChannelAction::start($chatId);
+        } else if ($channelName != '') {
+            TelegramAddChannelAction::add($chatId, $userId, $channelName);
         } else if (isset($requestData->message->forward_from_chat)) {
             TelegramForwardMessageAction::make($requestData);
         } else {
             TelegramEmptyAction::make($chatId);
         }
+    }
+
+    /**
+     * Channel name execution
+     *
+     * @param string $text
+     * @return string
+     */
+    public function channelNameExecution(string $text): string
+    {
+        $text = preg_replace('/\s+/', '', $text);
+        $text = str_replace('https://t.me/', '@', $text);
+        if (preg_match('/@/', $text) == 1) {
+            return $text;
+        }
+
+        return '';
     }
 }

@@ -3,19 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class TGUserSubscription extends Model
+class TGBotChannelSubscribtion extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     /**
      * Table name
      *
      * @var string
      */
-    protected $table = 'tg_user_subscribtions';
+    protected $table = 'tg_bot_channel_subscribtions';
 
     /**
      * The attributes that are mass assignable.
@@ -23,8 +22,8 @@ class TGUserSubscription extends Model
      * @var array
      */
     protected $fillable = [
-        'tg_user_id',
-        'tg_bot_channel_subscription_id'
+        'tg_channel_id',
+        'tg_channel_name'
     ];
 
     /**

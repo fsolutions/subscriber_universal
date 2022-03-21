@@ -15,8 +15,11 @@ class CreateTgUserSubscribtionsTable extends Migration
     {
         Schema::create('tg_user_subscribtions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('tg_user_id')->constrained('tg_users');
-            $table->unsignedInteger('tg_bot_channel_subscription_id')->nullable();
+            $table->unsignedBigInteger('tg_user_id');
+            $table->bigInteger('tg_bot_channel_subscription_id');
+            // $table->foreign('tg_user_id')->references('tg_user_id')->on('tg_users');
+            // $table->foreign('tg_bot_channel_subscription_id')->references('tg_channel_id')->on('tg_bot_channel_subscribtions');
+            $table->softDeletes('deleted_at', 0);
             $table->timestamps();
         });
     }
