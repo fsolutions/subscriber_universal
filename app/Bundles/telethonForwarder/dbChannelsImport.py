@@ -14,7 +14,7 @@ async def findNewChannels(last_channel_subscribtion_id = 0):
     print("{}, {}, {}".format(
       id, tg_channel_id, tg_channel_name))
     # finalArrayOfChannels.append({id, tg_channel_id, tg_channel_name})
-    finalArrayOfChannels.append(tg_channel_id)
+    finalArrayOfChannels.append(tg_channel_name)
     last_channel_subscribtion_id = id
 
   result = {

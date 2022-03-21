@@ -47,13 +47,13 @@ async def subscribtionLoop(client, output_channel):
     last_channel_subscribtion_id = dbResult['last_channel_subscribtion_id']
     
     async with client:
-        for tg_channel_id in dbResult['all_channels']:
-            result = client(functions.channels.JoinChannelRequest(
-                channel=tg_channel_id
+        for tg_channel_name in dbResult['all_channels']:
+            result = await client(functions.channels.JoinChannelRequest(
+                channel=tg_channel_name
             ))
             # print(result.stringify())
 
-            @client.on(events.NewMessage(chats=(tg_channel_id)))
+            @client.on(events.NewMessage(chats=(tg_channel_name)))
             async def normal_handler(event):
                 # Send message to bot
                 await client.forward_messages(output_channel, event.message.id, event.message.peer_id.channel_id)   

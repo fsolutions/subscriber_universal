@@ -35,5 +35,10 @@
 ## Autoloading python scripts on unix server
 Go to cron table (file in your OS, or in web interface) and insert new option
 ```
-*/5 * * * * pgrep -f t_forwarder.py || nohup python3 /FULL_DIR_TO_YOUR_PROJECT/subscriber_universal/app/Bundles/telethonForwarder/t_forwarder.py > test.out
+*/1 * * * * /FULL_DIR_TO_YOUR_PROJECT/subscriber_universal/app/Bundles/telethonForwarder/check
+_process.sh
+```
+Don't forget to check if shell user can execute bash script. You can try to give permissions by command or read a manual
+```
+chmod u+x check_process.sh
 ```
