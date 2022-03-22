@@ -28,8 +28,19 @@ class TelegramController extends Controller
         ]) ? ['success'] : ['setWebhook problems'];
     }
 
-    public function index(Request $request)
+    /**
+     * Action enter point for telegram bot
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return bool
+     */
+    public function index(Request $request): bool
     {
+        // Список команд:
+        // start - Начать работу с ботом (Start work with bot)
+        // add - Добавить новый канал (Add new channel)
+        // list - Список моих каналов (List of my channels)
+
         Log::debug('request', $request->all());
         $requestData = json_decode(file_get_contents('php://input'));
 
@@ -50,9 +61,9 @@ class TelegramController extends Controller
 
         if ($action == '/start') {
             TelegramStartAction::make($chatId, $userId, $userName);
-        } else if ($action == 'Добавить канал') {
+        } else if ($action == '/add' || $action == 'Добавить канал') {
             TelegramAddChannelAction::start($chatId);
-        } else if ($action == 'Список моих каналов') {
+        } else if ($action == '/list' || $action == 'Список моих каналов') {
             TelegramListOfMyChannelAction::make($chatId);
         } else if ($channelName != '') {
             TelegramAddChannelAction::add($chatId, $userId, $channelName);
@@ -61,6 +72,8 @@ class TelegramController extends Controller
         } else {
             TelegramEmptyAction::make($chatId);
         }
+
+        return true;
     }
 
     /**
