@@ -36,4 +36,14 @@ class TGUserSubscription extends Model
         'created_at' => 'datetime:d.m.Y H:i',
         'updated_at' => 'datetime:d.m.Y H:i'
     ];
+
+    /**
+     * Relationships One to One
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\hasOne
+     */
+    public function info()
+    {
+        return $this->hasOne(TGBotChannelSubscribtion::class, 'tg_channel_id', 'tg_bot_channel_subscription_id');
+    }
 }

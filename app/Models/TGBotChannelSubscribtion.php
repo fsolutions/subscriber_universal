@@ -23,7 +23,8 @@ class TGBotChannelSubscribtion extends Model
      */
     protected $fillable = [
         'tg_channel_id',
-        'tg_channel_name'
+        'tg_channel_name',
+        'tg_channel_title'
     ];
 
     /**

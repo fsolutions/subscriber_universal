@@ -23,14 +23,14 @@
 ```
 > php artisan migrate
 ```
-7. Installing python telethon watcher for channels and new messages
+7. Installing python telethon watcher for channels and new messages, and other helper libs
 ```
 > cd app/Bundles/telethonForwarder
 > python3 -m pip install -r requirements.txt
 ```
 8. Create .env file in telethonForwarder directory
 9. Set telegram webhooks by visiting page: https://YOURS_WEBSITE.COM/webhook
-10. Create bot & empty channel for telethon user -> you can write me for helping fomichevms@gmail.com
+10. Create bot & empty channel for telethon user -> you can write me for help fomichevms@gmail.com
 
 ## Autoloading python scripts on unix server
 Go to cron table (file in your OS, or in web interface) and insert new option

@@ -51,10 +51,10 @@ class TGUser extends Model
     /**
      * Relationships One to Many
      *
-     * @return \Illuminate\Database\Eloquent\Relations\hasOne
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */
     public function subscriptions()
     {
-        return $this->hasOne(TGUserSubscription::class, 'tg_user_id', 'tg_user_id');
+        return $this->hasMany(TGUserSubscription::class, 'tg_user_id', 'tg_user_id')->with(['info']);
     }
 }

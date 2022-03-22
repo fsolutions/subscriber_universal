@@ -10,6 +10,7 @@ use App\Bundles\Telegram\Actions\EmptyAction as TelegramEmptyAction;
 use App\Bundles\Telegram\Actions\StartAction as TelegramStartAction;
 use App\Bundles\Telegram\Actions\AddChannelAction as TelegramAddChannelAction;
 use App\Bundles\Telegram\Actions\ForwardMessageAction as TelegramForwardMessageAction;
+use App\Bundles\Telegram\Actions\ListOfMyChannelAction as TelegramListOfMyChannelAction;
 
 class TelegramController extends Controller
 {
@@ -51,6 +52,8 @@ class TelegramController extends Controller
             TelegramStartAction::make($chatId, $userId, $userName);
         } else if ($action == 'Добавить канал') {
             TelegramAddChannelAction::start($chatId);
+        } else if ($action == 'Список моих каналов') {
+            TelegramListOfMyChannelAction::make($chatId);
         } else if ($channelName != '') {
             TelegramAddChannelAction::add($chatId, $userId, $channelName);
         } else if (isset($requestData->message->forward_from_chat)) {

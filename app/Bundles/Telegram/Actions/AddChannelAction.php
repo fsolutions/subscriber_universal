@@ -51,7 +51,7 @@ class AddChannelAction
 
       TGBotChannelSubscribtion::updateOrCreate(
         ['tg_channel_id' => $channel['id']],
-        ['tg_channel_name' => $channel['username']]
+        ['tg_channel_name' => $channel['username'], 'tg_channel_title' => $channel['title']]
       );
 
       TGUserSubscription::updateOrCreate(
