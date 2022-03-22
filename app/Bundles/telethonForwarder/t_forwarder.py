@@ -23,11 +23,6 @@ async def main(loop, interval=2):
 
     try:
         while True:
-            # We want to update the application but get back
-            # to asyncio's event loop. For this we sleep a
-            # short time so the event loop can run.
-            #
-            # https://www.reddit.com/r/Python/comments/33ecpl
             await subscribtionLoop(client, output_channel)
             await asyncio.sleep(interval)
     except KeyboardInterrupt:
@@ -48,16 +43,22 @@ async def subscribtionLoop(client, output_channel):
     
     async with client:
         for tg_channel_name in dbResult['all_channels']:
-            result = await client(functions.channels.JoinChannelRequest(
-                channel=tg_channel_name
-            ))
-            # print(result.stringify())
+            try:
+                result = await client(functions.channels.JoinChannelRequest(
+                    channel=tg_channel_name
+                ))
+                # print(result.stringify())
+            except Exception as e:
+                print('Failed to join channel @' + tg_channel_name, e, file = sys.stderr)
 
-            @client.on(events.NewMessage(chats=(tg_channel_name)))
-            async def normal_handler(event):
-                # Send message to bot
-                await client.forward_messages(output_channel, event.message.id, event.message.peer_id.channel_id)   
-                print(event.stringify())
+            try:
+                @client.on(events.NewMessage(chats=(tg_channel_name)))
+                async def normal_handler(event):
+                    # Send message to bot
+                    await client.forward_messages(output_channel, event.message.id, event.message.peer_id.channel_id)   
+                    print(event.stringify())
+            except Exception as e:
+                print('Failed to subscribe on NewMessage event for channel @' + tg_channel_name, e, file = sys.stderr)
                 
     return True
 
