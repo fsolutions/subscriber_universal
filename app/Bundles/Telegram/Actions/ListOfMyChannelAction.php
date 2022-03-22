@@ -25,19 +25,24 @@ class ListOfMyChannelAction
     $listOfUserChannels = $user->subscriptions();
 
     if ($listOfUserChannels->count() > 0) {
-      $text = "Вот каналы, на которые вы подписаны:
-";
+      $text = "Вот каналы, на которые вы подписаны:";
 
       foreach ($listOfUserChannels->get() as $key => $channel) {
         $text .= ($channel->info->tg_channel_title ? $channel->info->tg_channel_title : $channel->info->tg_channel_name) . "
 ";
-      }
-    }
 
-    self::apiRequest('sendMessage', [
-      'chat_id' => $chatId,
-      'text' => $text
-    ]);
+        // CALLBACK BUTTONS 🗑
+        self::apiRequest('sendMessage', [
+          'chat_id' => $chatId,
+          'text' => $text
+        ]);
+      }
+    } else {
+      self::apiRequest('sendMessage', [
+        'chat_id' => $chatId,
+        'text' => $text
+      ]);
+    }
 
     return true;
   }
