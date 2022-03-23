@@ -1,5 +1,8 @@
-# Subscriber Universal Bot & User Dashboard
-## Subscriber workflow scheme
+# Subscriber Universal Bot (@SubscriberUniversalBot) & User Dashboard
+Subscriber Universal Bot helps people don't create junk in there messages list from channels in Telegram messenger. Bot allows to subscribe on channels and create a wall of messages in one place. 
+
+Try it now in telegram @SubscriberUniversalBot.
+## Subscriber easy workflow scheme
 ![SubscriberUniversal](https://user-images.githubusercontent.com/3332161/159100708-6f0c2b01-0661-4b07-8a48-909c26e542e3.png)
 
 ## Installation
