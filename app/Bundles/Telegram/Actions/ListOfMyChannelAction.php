@@ -9,6 +9,7 @@ use App\Traits\Telegram\RequestTrait;
 class ListOfMyChannelAction
 {
   use RequestTrait;
+  use MakeComponents;
 
   /**
    * Handler for send list of users channel action
@@ -27,14 +28,24 @@ class ListOfMyChannelAction
     if ($listOfUserChannels->count() > 0) {
       $text = "Вот каналы, на которые вы подписаны:";
 
+      $options = [];
+      $row = -1;
       foreach ($listOfUserChannels->get() as $key => $channel) {
-        $text .= ($channel->info->tg_channel_title ? $channel->info->tg_channel_title : $channel->info->tg_channel_name) . "
-";
+        if ($key % 2 == 0) {
+          $row++;
+          $options[$row] = [];
+        }
+
+        $options[$row][] = [
+          'text' => $channel->info->tg_channel_title ? $channel->info->tg_channel_title : $channel->info->tg_channel_name,
+          'callback_data' => $channel->tg_bot_channel_subscription_id
+        ];
 
         // CALLBACK BUTTONS 🗑
         self::apiRequest('sendMessage', [
           'chat_id' => $chatId,
-          'text' => $text
+          'text' => $text,
+          'reply_markup' => self::inlineKeyboardBtn($options)
         ]);
       }
     } else {
