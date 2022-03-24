@@ -10,7 +10,7 @@ load_dotenv()
 output_channel = '@SubscriberUniversalBot'  # where to publish materials
 last_channel_subscribtion_id = 0
 
-async def main(loop, interval=2):
+async def main(loop, interval=3):
     client = TelegramClient('subscriber_user', 
             os.getenv('TELETHON_API_ID'), 
             os.getenv('TELETHON_API_HASH'), 
@@ -33,13 +33,17 @@ async def main(loop, interval=2):
     # finally:
         # await client.disconnect() 
 
-async def test(incoming):
-    return await incoming
-
 async def subscribtionLoop(client, output_channel):
     global last_channel_subscribtion_id
-    dbResult = await dbChannelsImport.findNewChannels(last_channel_subscribtion_id)
-    last_channel_subscribtion_id = dbResult['last_channel_subscribtion_id']
+    try:
+        dbResult = await dbChannelsImport.findNewChannels(last_channel_subscribtion_id)
+        last_channel_subscribtion_id = dbResult['last_channel_subscribtion_id']
+    except Exception as e:
+        print('Failed to load data from DB', e, file = sys.stderr)
+        dbResult['all_channels'] = {
+            'last_channel_subscribtion_id': last_channel_subscribtion_id,
+            'all_channels': []
+        }
     
     async with client:
         for tg_channel_name in dbResult['all_channels']:

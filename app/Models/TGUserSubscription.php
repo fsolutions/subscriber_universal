@@ -42,6 +42,7 @@ class TGUserSubscription extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\hasOne
      */
+
     public function info()
     {
         return $this->hasOne(TGBotChannelSubscribtion::class, 'tg_channel_id', 'tg_bot_channel_subscription_id');
