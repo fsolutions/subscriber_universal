@@ -34,14 +34,3 @@ Try it now in telegram @SubscriberUniversalBot.
 8. Create .env file in telethonForwarder directory
 9. Set telegram webhooks by visiting page: https://YOURS_WEBSITE.COM/webhook
 10. Create bot & empty channel for telethon user -> you can write me for help fomichevms@gmail.com
-
-## Autoloading python scripts on unix server
-Go to cron table (file in your OS, or in web interface) and insert new option
-```
-*/1 * * * * /FULL_DIR_TO_YOUR_PROJECT/subscriber_universal/app/Bundles/telethonForwarder/check
-_process.sh
-```
-Don't forget to check if shell user can execute bash script. You can try to give permissions by command or read a manual
-```
-chmod u+x check_process.sh
-```
