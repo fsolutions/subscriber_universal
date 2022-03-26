@@ -4,6 +4,7 @@ import asyncio
 from dotenv import load_dotenv
 from telethon import TelegramClient, functions, types, sync, events
 import dbChannelsImport
+import dbChannelsLastMessage
 
 load_dotenv()
 
@@ -23,7 +24,7 @@ async def main(loop, interval=3):
 
     try:
         while True:
-            await subscribtionLoop(client, output_channel)
+            await subscribtion_loop(client, output_channel)
             await asyncio.sleep(interval)
     except KeyboardInterrupt:
         pass
@@ -33,36 +34,52 @@ async def main(loop, interval=3):
     # finally:
         # await client.disconnect() 
 
-async def subscribtionLoop(client, output_channel):
+async def check_missed_messages(channel_id, last_message_id, new_message_id):
+    await dbChannelsLastMessage.save_last_channels_messageId(channel_id, new_message_id)
+
+    if last_message_id is None:
+        last_message_id = new_message_id
+        
+    messagesForSend = list(range(last_message_id, new_message_id))
+    messagesForSend.append(new_message_id)
+    
+    return messagesForSend
+
+async def subscribtion_loop(client, output_channel):
     global last_channel_subscribtion_id
     try:
-        dbResult = await dbChannelsImport.findNewChannels(last_channel_subscribtion_id)
+        dbResult = await dbChannelsImport.find_new_channels(last_channel_subscribtion_id)
         last_channel_subscribtion_id = dbResult['last_channel_subscribtion_id']
     except Exception as e:
-        print('Failed to load data from DB', e, file = sys.stderr)
-        dbResult['all_channels'] = {
+        dbResult = {
             'last_channel_subscribtion_id': last_channel_subscribtion_id,
             'all_channels': []
         }
+        print('Failed to load data from DB', e, file = sys.stderr)
     
     async with client:
-        for tg_channel_name in dbResult['all_channels']:
+        for tg_channel in dbResult['all_channels']:
             try:
+                print(tg_channel['tg_channel_name'], tg_channel['tg_channel_last_message_id'])
                 result = await client(functions.channels.JoinChannelRequest(
-                    channel=tg_channel_name
+                    channel=tg_channel['tg_channel_name']
                 ))
                 # print(result.stringify())
             except Exception as e:
-                print('Failed to join channel @' + tg_channel_name, e, file = sys.stderr)
+                print('Failed to join channel @' + tg_channel['tg_channel_name'], e, file = sys.stderr)
 
             try:
-                @client.on(events.NewMessage(chats=(tg_channel_name)))
+                @client.on(events.NewMessage(chats=(tg_channel['tg_channel_name'])))
                 async def normal_handler(event):
+                    messagesForSend = await check_missed_messages(event.message.peer_id.channel_id, tg_channel['tg_channel_last_message_id'], event.message.id)
+                    tg_channel['tg_channel_last_message_id'] = event.message.id
                     # Send message to bot
+                    # await client.forward_messages(output_channel, messagesForSend, event.message.peer_id.channel_id)   
                     await client.forward_messages(output_channel, event.message.id, event.message.peer_id.channel_id)   
+
                     print(event.stringify())
             except Exception as e:
-                print('Failed to subscribe on NewMessage event for channel @' + tg_channel_name, e, file = sys.stderr)
+                print('Failed to subscribe on NewMessage event for channel @' + tg_channel['tg_channel_name'], e, file = sys.stderr)
                 
     return True
 
