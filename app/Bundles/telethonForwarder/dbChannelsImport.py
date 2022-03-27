@@ -1,20 +1,23 @@
+import os
 import mysql.connector
 
-async def findNewChannels(last_channel_subscribtion_id = 0):
-  cnx = mysql.connector.connect(user='subscriber', password='dZ3jX1tD0bdF7j', host='127.0.0.1', database='subscriber')
-  cursor = cnx.cursor()
+async def find_new_channels(last_channel_subscribtion_id = 0):
+  dbConn = mysql.connector.connect(user=os.getenv('DB_USERNAME'), 
+                                  password=os.getenv('DB_PASSWORD'), 
+                                  host=os.getenv('DB_HOST'), 
+                                  database=os.getenv('DB_DATABASE'))
+  cursor = dbConn.cursor()
 
-  query = ("SELECT id, tg_channel_id, tg_channel_name FROM tg_bot_channel_subscribtions "
+  query = ("SELECT id, tg_channel_id, tg_channel_name, tg_channel_last_message_id FROM tg_bot_channel_subscribtions "
           "WHERE id > %s")
 
   cursor.execute(query, [last_channel_subscribtion_id])
   finalArrayOfChannels = []
 
-  for (id, tg_channel_id, tg_channel_name) in cursor:
-    print("{}, {}, {}".format(
-      id, tg_channel_id, tg_channel_name))
-    # finalArrayOfChannels.append({id, tg_channel_id, tg_channel_name})
-    finalArrayOfChannels.append(tg_channel_name)
+  for (id, tg_channel_id, tg_channel_name, tg_channel_last_message_id) in cursor:
+    # print("{}, {}, {}, {}".format(
+    #   id, tg_channel_id, tg_channel_name, tg_channel_last_message_id))
+    finalArrayOfChannels.append({'tg_channel_name': tg_channel_name, 'tg_channel_last_message_id': tg_channel_last_message_id})
     last_channel_subscribtion_id = id
 
   result = {
@@ -23,6 +26,6 @@ async def findNewChannels(last_channel_subscribtion_id = 0):
   }
 
   cursor.close()
-  cnx.close()
+  dbConn.close()
   
   return result
