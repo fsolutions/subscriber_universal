@@ -1,6 +1,6 @@
-import sys 
-import os
-import asyncio
+#!/usr/bin/python
+
+import psutil, setproctitle, sys, os, asyncio
 from dotenv import load_dotenv
 from telethon import TelegramClient, functions, types, sync, events
 import dbChannelsImport
@@ -8,8 +8,21 @@ import dbChannelsLastMessage
 
 load_dotenv()
 
+setproctitle.setproctitle('t_forwarder.py')
 output_channel = '@SubscriberUniversalBot'  # where to publish materials
 last_channel_subscribtion_id = 0
+
+def checkNumberOfProcessRunning(processName):
+    procCount = 0
+    #Iterate over the all the running process
+    for proc in psutil.process_iter():
+        try:
+            # Check if process name contains the given name string.
+            if processName.lower() in proc.name().lower():
+                procCount = procCount + 1
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
+    return procCount
 
 async def main(loop, interval=3):
     client = TelegramClient('subscriber_user', 
@@ -83,4 +96,5 @@ async def subscribtion_loop(client, output_channel):
                 
     return True
 
-asyncio.run(main(1))
+if checkNumberOfProcessRunning('t_forwarder.py') == 1:
+    asyncio.run(main(1))
