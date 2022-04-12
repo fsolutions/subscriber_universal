@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Traits\Telegram\RequestTrait;
+use App\Bundles\Telegram\Actions\AboutAction as TelegramAboutAction;
 use App\Bundles\Telegram\Actions\EmptyAction as TelegramEmptyAction;
 use App\Bundles\Telegram\Actions\StartAction as TelegramStartAction;
 use App\Bundles\Telegram\Actions\AddChannelAction as TelegramAddChannelAction;
@@ -41,6 +42,7 @@ class TelegramController extends Controller
         // start - Начать работу с ботом (Start work with bot)
         // add - Добавить новый канал (Add new channel)
         // list - Список моих каналов (List of my channels)
+        // about - О создателях (About dev team)
 
         Log::debug('request', $request->all());
         $requestData = json_decode(file_get_contents('php://input'));
@@ -62,6 +64,8 @@ class TelegramController extends Controller
         } else {
             if ($action == '/start') {
                 TelegramStartAction::make($chatId, $userId, $userName);
+            } else if ($action == '/about') {
+                TelegramAboutAction::make($chatId);
             } else if ($action == '/add' || $action == 'Добавить канал') {
                 TelegramAddChannelAction::start($chatId);
             } else if ($action == '/list' || $action == 'Список моих каналов') {

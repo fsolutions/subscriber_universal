@@ -26,7 +26,12 @@ class StartAction
     
 Наш бот позволяет подписываться на каналы, не устраивая мусорку в Ваших чатах. Просто добавьте нужные Вам каналы.
 
-Меню ниже поможет Вам сориентироваться.";
+Меню ниже поможет Вам сориентироваться.
+
+------
+*Welcome to My news feeder bot*
+
+Our bot allows you to subscribe to channels without trashing your chats. Just add the channels you need here and delete them from your chat list.";
 
     $options = [
       [
